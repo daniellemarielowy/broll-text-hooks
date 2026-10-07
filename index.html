@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Answer a few questions about your ideal client and get 20 hyper-specific hooks for B-roll trial reels.">
+<title>Trial Reel Hook Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+html{-webkit-text-size-adjust:100%}
+[hidden]{display:none!important}
+body{margin:0}
+img{max-width:100%}
+/* Layout: intake brief on the left (sticky on desktop), hook script cards on the right; stacks on phones. */
+:root{
+  --bg:#f3f1f6; --surface:#ffffff; --ink:#1f1a2b; --muted:#5f5872; --line:#ddd8e6;
+  --accent:#7a2e5c; --accent-ink:#ffffff; --mark:#f6d7e6; --field:#faf9fc; --ok:#2f6b4f;
+  --display:"Young Serif",Georgia,"Times New Roman",serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#17141e; --surface:#211d2b; --ink:#efeaf6; --muted:#aca4bd; --line:#363044;
+  --accent:#e58bbd; --accent-ink:#1c1222; --mark:#4a2a3e; --field:#1b1824; --ok:#7fcba4; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17141e; --surface:#211d2b; --ink:#efeaf6; --muted:#aca4bd; --line:#363044;
+  --accent:#e58bbd; --accent-ink:#1c1222; --mark:#4a2a3e; --field:#1b1824; --ok:#7fcba4; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;padding-inline:16px;padding-block:28px 64px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+header{display:flex;flex-direction:column;gap:6px;max-width:760px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,4.4vw,42px);line-height:1.1;margin:0;text-wrap:balance}
+header p{margin:0;color:var(--muted);max-width:62ch}
+.grid{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.brief{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:18px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);max-height:calc(100vh - 32px);overflow:auto}
+@media (max-width:900px){.brief{position:static;max-height:none}}
+.intro{margin:0;font-size:13.5px;color:var(--muted)}
+.presets{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.presets span{font-size:12px;color:var(--muted);width:100%}
+.chip{font:600 12.5px var(--body);border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--mark);border-color:var(--accent)}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+legend{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding:0}
+label{display:flex;flex-direction:column;gap:5px;font-weight:600;font-size:14px}
+label small{font-weight:400;color:var(--muted);font-size:12.5px;line-height:1.4}
+input,textarea,select{font:400 14px/1.45 var(--body);color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:9px;padding:9px 11px;width:100%}
+textarea{resize:vertical;min-height:70px}
+textarea.big{min-height:120px}
+input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.req{color:var(--accent)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;position:sticky;bottom:-20px;background:var(--surface);padding-block:12px;margin-bottom:-8px;border-top:1px solid var(--line)}
+@media (max-width:900px){.actions{position:static}}
+.btn{font:700 14px var(--body);border-radius:10px;padding:11px 16px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn:disabled{opacity:.5;cursor:default}
+.status{font-size:13px;color:var(--muted);min-height:1.3em}
+.results{display:flex;flex-direction:column;gap:14px;min-width:0}
+.results-head{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:baseline}
+.results-head h2{font-family:var(--display);font-weight:400;font-size:24px;margin:0}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.example-note{background:var(--mark);border-radius:10px;padding:10px 14px;font-size:13.5px}
+.list{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+.hook{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px}
+.num{font-family:var(--display);font-size:22px;color:var(--accent);line-height:1.2;min-width:1.6em;font-variant-numeric:tabular-nums}
+.hook-body{display:flex;flex-direction:column;gap:10px;min-width:0}
+.hook-text{font-size:16px;line-height:1.55;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.pill{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:3px 9px;color:var(--muted)}
+.read{font-family:var(--mono);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.read.long{color:var(--accent)}
+.tools{display:flex;gap:8px;margin-left:auto}
+.mini{font:600 12.5px var(--body);border:1px solid var(--line);background:var(--field);color:var(--ink);border-radius:8px;padding:5px 10px;cursor:pointer}
+.mini:disabled{opacity:.5;cursor:default}
+.prior{font-size:13px;color:var(--muted);margin:0;border-left:2px solid var(--line);padding-left:10px}
+.empty{border:1px dashed var(--line);border-radius:12px;padding:22px;color:var(--muted)}
+.unavailable{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+@media (prefers-reduced-motion:no-preference){.hook{animation:rise .25s ease-out both}@keyframes rise{from{transform:translateY(4px)}to{transform:none}}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Upper-funnel trial reels · B-roll text hooks</span>
+    <h1>Trial Reel Hook Lab</h1>
+    <p>Answer a few questions about your ideal client and get 20 hyper-specific hooks for B-roll reels. Each one stacks real details from her life, lands on a private moment she'll recognize instantly, and ends on an open loop so she keeps watching.</p>
+  </header>
+
+  <div class="grid">
+    <form class="brief" id="brief" novalidate>
+      <p class="intro">Answer as specifically as you can. Numbers, names of tools, times of day and real moments are what make a hook stop the scroll. Fields marked <span class="req">*</span> are required. Your answers stay saved in this browser.</p>
+
+      <fieldset>
+        <legend>1 · You and your offer</legend>
+        <label for="f-offer">What do you do, and what changes for your clients? <span class="req">*</span>
+          <small>One or two sentences.</small>
+          <textarea id="f-offer" name="offer" placeholder="Love coach. I help six-figure women entrepreneurs feel as secure in love as they are in business."></textarea>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>2 · Your ideal client</legend>
+        <label for="f-who">Who is she, exactly? <span class="req">*</span>
+          <small>Business stage, revenue, years in business or career, age range, kids and their ages, relationship status. Use numbers.</small>
+          <textarea id="f-who" name="who" placeholder="Founders 32-45, $150K-$500K businesses, 3-8 years in. Two kids under 8. Left a 15-year corporate career."></textarea>
+        </label>
+        <label for="f-pain">Where is she stuck right now? <span class="req">*</span>
+          <small>What she feels and what keeps happening, in plain words.</small>
+          <textarea id="f-pain" name="pain" placeholder="Keeps attracting emotionally unavailable men. Over-analyzes every text. Shrinks herself so he feels comfortable."></textarea>
+        </label>
+        <label for="f-private">What does she do when no one's watching? <span class="req">*</span>
+          <small>The private moments she'd be embarrassed to admit. This is the most important answer on the page.</small>
+          <textarea id="f-private" name="private" placeholder="Rewrites a three-word text four times, then deletes it. Checks when he was last active on Instagram during a client call."></textarea>
+        </label>
+        <label for="f-strong">Where is she confident and in control?
+          <small>The part of her life that's working. Hooks get their tension from this contrast.</small>
+          <textarea id="f-strong" name="strong" placeholder="Negotiates $40K contracts, fires contractors who miss deadlines, trusts her gut on every business decision."></textarea>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>3 · Her story so far</legend>
+        <label for="f-tried">What has she already tried that didn't fix it?
+          <textarea id="f-tried" name="tried" placeholder="Therapy, reading Attached, business coaches for everything except this."></textarea>
+        </label>
+        <label for="f-told">What does she keep telling herself, or hear from others?
+          <small>Excuses, timelines, the things her friends or family say.</small>
+          <textarea id="f-told" name="told" placeholder="&quot;This one is different.&quot; &quot;He's just busy with work.&quot; &quot;I'm focused on my business right now.&quot;"></textarea>
+        </label>
+        <label for="f-want">What does she want?
+          <textarea id="f-want" name="want" placeholder="To be the same woman in love that she is in business."></textarea>
+        </label>
+        <label for="f-words">Phrases she actually uses
+          <small>Copy them word for word from DMs, sales calls, reviews or intake forms.</small>
+          <textarea id="f-words" name="words" placeholder="too much, emotionally unavailable, he's not ready for anything serious"></textarea>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>4 · Optional extras</legend>
+        <label for="f-avoid">Anything to avoid?
+          <small>Compliance rules (for example, licensed providers can't diagnose), words you hate, off-brand angles.</small>
+          <textarea id="f-avoid" name="avoid"></textarea>
+        </label>
+        <label for="f-research">Paste research, your sales page, or call notes
+          <small>Hooks pull real details and language from this. About 12,000 characters are used.</small>
+          <textarea id="f-research" name="research" class="big"></textarea>
+        </label>
+        <label for="f-direction">Direction for this batch
+          <small>For example "more business details", "more POV hooks", "focus on moms of toddlers".</small>
+          <input id="f-direction" name="direction">
+        </label>
+      </fieldset>
+
+      <label for="f-code" id="code-wrap" hidden>Access code <span class="req">*</span>
+        <small>The code you were given to use this tool.</small>
+        <input id="f-code" name="code" autocomplete="off">
+      </label>
+
+      <div class="actions">
+        <button type="submit" class="btn" id="go">Write 20 hooks</button>
+        <button type="button" class="btn ghost" id="stop" hidden>Stop</button>
+        <button type="button" class="btn ghost" id="clear">Clear answers</button>
+        <div class="status" id="status" role="status" aria-live="polite"></div>
+      </div>
+    </form>
+
+    <section class="results" aria-labelledby="results-title">
+      <div class="results-head">
+        <h2 id="results-title">Hooks</h2>
+        <div class="tools">
+          <button type="button" class="mini" id="copy-all">Copy all</button>
+        </div>
+      </div>
+      
+      <div id="example-note" class="example-note">Example hooks written for a money coach who works with therapists. Fill in your answers and press <strong>Write 20 hooks</strong> to get yours.</div>
+      <ol class="list" id="list"></ol>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+const $ = (s) => document.querySelector(s);
+const FIELDS = ["offer","who","strong","pain","private","tried","told","want","words","avoid","research","direction"];
+
+// Shown when the page first opens, so visitors can see what they'll get.
+const EXAMPLES = [
+  "You can sit with a client's grief for 50 minutes without flinching, but you haven't opened your business bank account since March because you're scared of what's in it. There's a reason money feels harder than the hardest session you've ever held.",
+  "You raised your rate to $175 in January, then quietly kept three clients at $90 because asking them to pay more felt like abandoning them. Here's what that kindness is actually costing you.",
+  "POV: It's 9:40pm, you just finished notes for six back-to-back sessions, and you're doing the math on whether you can afford to take a week off in August. You've been in private practice for seven years.",
+  "You told yourself you'd stop worrying about money once you left the group practice. Then once your caseload was full. Then once you hit $120K. You have a waitlist now, and you still check your balance before buying groceries. That's not a revenue problem."
+];
+
+const form = $("#brief"), list = $("#list"), statusEl = $("#status");
+const goBtn = $("#go"), stopBtn = $("#stop"), note = $("#example-note");
+const codeWrap = $("#code-wrap"), codeInput = $("#f-code");
+let current = []; let ctl = null; let needsCode = false;
+
+const KEY = "hooklab-answers-v1";
+function saveDraft(){ try { const v = {}; FIELDS.forEach(f => v[f] = form.elements[f].value); v.code = codeInput.value; localStorage.setItem(KEY, JSON.stringify(v)); } catch {} }
+function loadDraft(){ try { const v = JSON.parse(localStorage.getItem(KEY) || "null"); if (v){ FIELDS.forEach(f => { if (typeof v[f] === "string") form.elements[f].value = v[f]; }); if (typeof v.code === "string") codeInput.value = v.code; } } catch {} }
+form.addEventListener("input", saveDraft);
+$("#clear").addEventListener("click", () => { FIELDS.forEach(f => form.elements[f].value = ""); saveDraft(); statusEl.textContent = "Answers cleared."; });
+
+function words(t){ return (t.trim().match(/\S+/g) || []).length; }
+function readSeconds(t){ return Math.round(words(t) / 3.3); } // about 200 words a minute on screen
+
+function render(){
+  list.replaceChildren();
+  if (!current.length){
+    const li = document.createElement("li"); li.className = "empty";
+    li.textContent = "Your hooks will appear here as they're written.";
+    list.append(li); return;
+  }
+  current.forEach((h, i) => list.append(card(h, i)));
+}
+function card(h, i){
+  const li = document.createElement("li"); li.className = "hook";
+  const n = document.createElement("div"); n.className = "num"; n.textContent = String(i + 1).padStart(2, "0");
+  const body = document.createElement("div"); body.className = "hook-body";
+  const p = document.createElement("p"); p.className = "hook-text"; p.textContent = h.hook;
+  body.append(p);
+  if (h.prior){ const pr = document.createElement("p"); pr.className = "prior"; pr.textContent = "Before: " + h.prior; body.append(pr); }
+  const meta = document.createElement("div"); meta.className = "meta";
+  if (h.format){ const f = document.createElement("span"); f.className = "pill"; f.textContent = h.format; meta.append(f); }
+  if (h.angle){ const a = document.createElement("span"); a.className = "pill"; a.textContent = h.angle; meta.append(a); }
+  const s = readSeconds(h.hook); const r = document.createElement("span");
+  r.className = "read" + (s > 15 ? " long" : ""); r.textContent = words(h.hook) + " words · ~" + s + "s on screen";
+  meta.append(r);
+  const tools = document.createElement("div"); tools.className = "tools";
+  if (!h.example){
+    const sp = document.createElement("button"); sp.type = "button"; sp.className = "mini"; sp.textContent = "Go more specific";
+    sp.addEventListener("click", () => sharpen(i, sp));
+    tools.append(sp);
+  }
+  const cp = document.createElement("button"); cp.type = "button"; cp.className = "mini"; cp.textContent = "Copy";
+  cp.addEventListener("click", () => copy(h.hook, cp, p));
+  tools.append(cp); meta.append(tools);
+  body.append(meta);
+  li.append(n, body); return li;
+}
+async function copy(text, btn, el){
+  const old = btn.textContent;
+  try { await navigator.clipboard.writeText(text); btn.textContent = "Copied"; }
+  catch { btn.textContent = "Selected, press copy"; const r = document.createRange(); r.selectNodeContents(el || list); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+  setTimeout(() => { btn.textContent = old; }, 1600);
+}
+$("#copy-all").addEventListener("click", (e) => copy(current.map((h, i) => "#" + (i + 1) + " " + h.hook).join("\n\n"), e.currentTarget, list));
+
+function fields(){ const v = {}; FIELDS.forEach(f => v[f] = form.elements[f].value.trim()); return v; }
+
+function parseLine(line){
+  line = line.trim().replace(/^```(json)?/, "").replace(/```$/, "").replace(/,$/, "").trim();
+  if (!line.startsWith("{")) return null;
+  try { const o = JSON.parse(line); return o && typeof o.hook === "string" && o.hook.trim() ? { hook:o.hook.trim(), angle:String(o.angle||"").slice(0,40), format:String(o.format||"").slice(0,24) } : null; }
+  catch { return null; }
+}
+
+async function errorText(r){
+  try { const j = await r.json(); if (j && j.error) return j.error; } catch {}
+  return "Something went wrong (" + r.status + "). Try again.";
+}
+
+function checkRequired(v){
+  const missing = [["offer","What you do"],["who","Who she is"],["pain","Where she's stuck"],["private","What she does when no one's watching"]].filter(([k]) => !v[k]);
+  if (missing.length){ statusEl.textContent = "Fill in: " + missing.map(m => m[1]).join(", ") + "."; form.elements[missing[0][0]].focus(); return false; }
+  if (needsCode && !codeInput.value.trim()){ statusEl.textContent = "Enter your access code."; codeInput.focus(); return false; }
+  return true;
+}
+
+form.addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const v = fields();
+  if (!checkRequired(v)) return;
+  ctl = new AbortController();
+  goBtn.disabled = true; stopBtn.hidden = false; note.hidden = true;
+  statusEl.textContent = "Thinking... the first hooks usually show up in 10-30 seconds.";
+  current = []; render();
+  let pending = "";
+  const eat = (chunk) => {
+    const lines = (pending + chunk).split("\n"); pending = lines.pop();
+    let added = false;
+    for (const l of lines){ const h = parseLine(l); if (h && current.length < 20){ current.push(h); added = true; } }
+    if (added){ render(); statusEl.textContent = "Writing... " + current.length + " of 20"; }
+  };
+  try {
+    const r = await fetch("/api/generate", {
+      method: "POST", signal: ctl.signal,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mode: "hooks", fields: v, code: codeInput.value.trim() })
+    });
+    if (!r.ok || !r.body){ statusEl.textContent = await errorText(r); return; }
+    const reader = r.body.getReader(); const dec = new TextDecoder();
+    for (;;){ const { done, value } = await reader.read(); if (done) break; eat(dec.decode(value, { stream: true })); }
+    const last = parseLine(pending); if (last && current.length < 20) current.push(last);
+    render();
+    statusEl.textContent = current.length ? current.length + " hooks written." : "No hooks came back. Try again.";
+  } catch (e) {
+    const last = parseLine(pending); if (last && current.length < 20) current.push(last);
+    render();
+    statusEl.textContent = e && e.name === "AbortError" ? "Stopped. " + current.length + " hooks kept." : "Lost the connection. " + current.length + " hooks kept. Try again.";
+  } finally {
+    goBtn.disabled = false; stopBtn.hidden = true; ctl = null;
+  }
+});
+stopBtn.addEventListener("click", () => ctl && ctl.abort());
+
+async function sharpen(i, btn){
+  const v = fields(); if (!checkRequired(v)) return;
+  const h = current[i];
+  btn.disabled = true; const old = btn.textContent; btn.textContent = "Rewriting...";
+  try {
+    const r = await fetch("/api/generate", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mode: "sharpen", fields: v, hook: h.hook, code: codeInput.value.trim() })
+    });
+    if (!r.ok){ statusEl.textContent = await errorText(r); btn.textContent = old; btn.disabled = false; return; }
+    const out = await r.json();
+    if (out && typeof out.hook === "string" && out.hook.trim()){ current[i] = { ...h, prior: h.hook, hook: out.hook.trim() }; render(); }
+    else { btn.textContent = old; btn.disabled = false; }
+  } catch {
+    statusEl.textContent = "Lost the connection. Try again.";
+    btn.textContent = old; btn.disabled = false;
+  }
+}
+
+// Opening state: saved answers (if any) and example hooks.
+loadDraft();
+current = EXAMPLES.map(h => ({ hook:h, format:"Example", angle:"Money coach", example:true }));
+render();
+
+fetch("/api/generate").then(r => r.ok ? r.json() : null).then(j => {
+  needsCode = Boolean(j && j.needsCode); codeWrap.hidden = !needsCode;
+}).catch(() => {});
+})();
+</script>
+
+</body>
+</html>

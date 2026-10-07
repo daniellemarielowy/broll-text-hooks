@@ -1,0 +1,10 @@
+{
+  "name": "hook-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Trial Reel Hook Lab: writes 20 hyper-specific B-roll hooks from a short client brief.",
+  "engines": {
+    "node": ">=18"
+  }
+}
